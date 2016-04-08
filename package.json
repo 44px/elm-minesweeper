@@ -1,0 +1,15 @@
+{
+  "name": "elm-simple-starter",
+  "version": "1.0.0",
+  "description": "helpful summary of your project, less than 80 characters",
+  "scripts": {
+    "start": "elm-live src/Main.elm --output=build.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Alexander Shepelin",
+  "license": "MIT",
+  "devDependencies": {
+    "elm": "0.16.0",
+    "elm-live": "2.1.0"
+  }
+}
