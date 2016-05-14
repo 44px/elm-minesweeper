@@ -9,7 +9,7 @@
   "author": "Alexander Shepelin",
   "license": "MIT",
   "devDependencies": {
-    "elm": "0.16.0",
-    "elm-live": "2.1.0"
+    "elm": "0.17.0",
+    "elm-live": "2.2.1"
   }
 }
