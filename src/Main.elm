@@ -6,7 +6,7 @@ import Field
 
 main =
   App.beginnerProgram
-    { model = Field.init 20 10
+    { model = Field.init 10 20
     , update = Field.update
     , view = Field.view
   }

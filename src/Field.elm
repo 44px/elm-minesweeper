@@ -1,6 +1,6 @@
 module Field exposing (Model, init, update, view)
 
-import Array
+import Array exposing (Array)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
@@ -11,59 +11,50 @@ import Cell
 
 -- Model
 
-type alias Model = List Row
+type alias Model = Array Row
 
-type alias Row =
-  { index : RowIndex
-  , model : List IndexedCell
-  }
-
-type alias IndexedCell =
-  { index : CellIndex
-  , model : Cell.Model
-  }
+type alias Row = Array Cell.Model
 
 type alias RowIndex = Int
 
-type alias CellIndex = Int
+type alias ColIndex = Int
 
 
-init width height =
-  List.map (\index -> Row index (initRow width)) [0..height-1]
+init rows columns =
+  Array.repeat rows (initRow columns)
 
 
-initRow width =
-  List.map (\index -> IndexedCell index (Cell.init (Cell.Safe 0))) [0..width-1]
+initRow columns =
+  Array.repeat columns (Cell.init (Cell.Safe 0))
 
--- TODO: move to Array (Array Cell) structure
-getCell field rowIndex cellIndex =
-  (Array.get rowIndex field) `Maybe.andThen` (Array.get cellIndex)
-
-
+-- TODO:
 getNeighbourCells =
   []
 
 
 -- Update
 
-type Msg = Click RowIndex CellIndex Cell.Msg
+type Msg = Click RowIndex ColIndex Cell.Msg
 
 
 update msg model =
   case msg of
     -- TODO: init here?
-    Click rowIndex cellIndex msg ->
-      List.map (\row ->
-        if rowIndex == row.index then
-          Row row.index (List.map (\cell ->
-            if cellIndex == cell.index then
-              IndexedCell cell.index (Cell.update msg cell.model)
-            else
-              cell)
-            row.model)
-        else
-          row
-      ) model
+    Click rowIndex colIndex msg ->
+      updateCell model rowIndex colIndex msg
+
+
+updateCell field rowIndex colIndex msg =
+  let
+    row = Maybe.withDefault Array.empty (Array.get rowIndex field)
+    maybeCell = Array.get colIndex row
+  in
+    case maybeCell of
+      Just cell ->
+        Array.set rowIndex (Array.set colIndex (Cell.update msg cell) row) field
+
+      Nothing ->
+        field
 
 
 -- View
@@ -71,14 +62,14 @@ update msg model =
 view model =
   div
     [class "field"]
-    (List.map renderRow model)
+    (List.map renderRow (Array.toIndexedList model))
 
 
-renderRow {index, model} =
+renderRow (index, row) =
   div
     [class "field__row"]
-    (List.map (renderCell index) model)
+    (List.map (renderCell index) (Array.toIndexedList row))
 
 
-renderCell rowIndex {index, model} =
-  App.map (Click rowIndex index) (Cell.view model)
+renderCell rowIndex (index, cell) =
+  App.map (Click rowIndex index) (Cell.view cell)
