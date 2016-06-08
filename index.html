@@ -7,6 +7,36 @@
     <title>elm-simple-starter</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
           integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <style media="screen">
+      *, *:before, *:after {
+        box-sizing: border-box;
+      }
+
+      .cell {
+        float: left;
+        width: 20px;
+        height: 20px;
+        line-height: 20px;
+        text-align: center;
+        background: #EEE;
+        border: 1px solid #CCC;
+        cursor: pointer;
+        user-select: none;
+      }
+
+      .field {
+        display: block;
+        margin: 50px auto;
+        width: 400px;
+        height: 200px;
+        background: #FAFAFA;
+        user-select: none;
+      }
+
+      .field__row {
+        overflow: hidden;
+      }
+    </style>
   </head>
   <body>
     <div id="app"></div>
